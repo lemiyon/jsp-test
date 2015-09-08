@@ -1,0 +1,35 @@
+package com.service;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.dao.BoardDAO;
+import com.entity.BoardDTO;
+
+/*
+ * 게시판 목록 보기 비즈니스 로직 처리 클래스
+ */
+
+public class BoardSearchCommand implements BoardCommand {
+
+	/*
+	 * FrontController 에서 해야 할 일을 따로 뽑아옴
+	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
+	 */
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) {
+
+		String searchName = request.getParameter("searchName");
+		String searchValue = request.getParameter("searchValue");
+		
+		BoardDAO dao = new BoardDAO();
+		List<BoardDTO> list = dao.search(searchName, searchValue);
+		
+		
+		request.setAttribute("list", list);
+		
+	}
+	
+}
