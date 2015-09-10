@@ -1,4 +1,4 @@
-package com.filter;
+package com.cdg.study.filter;
 
 import java.io.IOException;
 

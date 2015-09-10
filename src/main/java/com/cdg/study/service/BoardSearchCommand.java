@@ -1,18 +1,18 @@
-package com.service;
+package com.cdg.study.service;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dao.BoardDAO;
-import com.entity.BoardDTO;
+import com.cdg.study.dao.BoardDAO;
+import com.cdg.study.entity.BoardDTO;
 
 /*
  * 게시판 목록 보기 비즈니스 로직 처리 클래스
  */
 
-public class BoardListCommand implements BoardCommand {
+public class BoardSearchCommand implements BoardCommand {
 
 	/*
 	 * FrontController 에서 해야 할 일을 따로 뽑아옴
@@ -20,11 +20,13 @@ public class BoardListCommand implements BoardCommand {
 	 */
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		BoardDAO dao = new BoardDAO();
-		List<BoardDTO> list = dao.list();
+
+		String searchName = request.getParameter("searchName");
+		String searchValue = request.getParameter("searchValue");
 		
-		// list.jsp 에서 List<BoardDTO>를 보여준다.
-		// 3가지 scope 중에 선택하여 저장	.
+		BoardDAO dao = new BoardDAO();
+		List<BoardDTO> list = dao.search(searchName, searchValue);
+		
 		
 		request.setAttribute("list", list);
 		

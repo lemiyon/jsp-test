@@ -1,4 +1,4 @@
-package com.service;
+package com.cdg.study.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

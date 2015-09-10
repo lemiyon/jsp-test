@@ -1,4 +1,4 @@
-package com.controller;
+package com.cdg.study.controller;
 
 /*
  * MVC의 Controller 역할 담당하는 서블릿
@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.filter.EncodingFilter;
-import com.service.BoardDeleteCommand;
-import com.service.BoardListCommand;
-import com.service.BoardRetrieveCommand;
-import com.service.BoardSearchCommand;
-import com.service.BoardUpdateCommand;
-import com.service.BoardWriteCommand;
+import com.cdg.study.filter.EncodingFilter;
+import com.cdg.study.service.BoardDeleteCommand;
+import com.cdg.study.service.BoardListCommand;
+import com.cdg.study.service.BoardRetrieveCommand;
+import com.cdg.study.service.BoardSearchCommand;
+import com.cdg.study.service.BoardUpdateCommand;
+import com.cdg.study.service.BoardWriteCommand;
 
 @WebServlet("/controller/*")
 public class FrontController extends HttpServlet {

@@ -1,16 +1,26 @@
-package com.dao;
+package com.cdg.study.dao;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.Environment;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.transaction.TransactionFactory;
+import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.hsqldb.Server;
+import org.hsqldb.jdbc.jdbcDataSource;
+import org.hsqldb.jdbc.jdbcDataSourceFactory;
+import org.hsqldb.util.DatabaseManager;
 
-import com.entity.BoardDTO;
+import com.cdg.study.entity.BoardDTO;
 
 /*
  create table board
@@ -30,7 +40,7 @@ public class BoardDAO {
 	static SqlSessionFactory sqlSessionFactory;
 	// sqlSessionFactory, SqlSession
 	static {
-		String resource = "com/dao/Configuration.xml";
+		String resource = "Configuration.xml";
 		InputStream inputStream = null;
 		try {
 			inputStream = Resources.getResourceAsStream(resource);
@@ -38,6 +48,18 @@ public class BoardDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//		new Server().start();
+		
+//		jdbcDataSource dataSource = new jdbcDataSource();
+//		dataSource.set
+//		dataSource.setDatabase("jdbc:hsqldb:file:create_table.sql");
+//		TransactionFactory transactionFactory = new JdbcTransactionFactory();
+//		Environment environment = new Environment("development", transactionFactory, dataSource);
+//		Configuration configuration = new Configuration(environment);
+//		configuration.addMapper(BlogMapper.class);
+//		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
+		
+		
 		sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 	}
 

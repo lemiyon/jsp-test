@@ -1,12 +1,12 @@
-package com.service;
+package com.cdg.study.service;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dao.BoardDAO;
-import com.entity.BoardDTO;
+import com.cdg.study.dao.BoardDAO;
+import com.cdg.study.entity.BoardDTO;
 
 
 public class BoardRetrieveCommand implements BoardCommand {

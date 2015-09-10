@@ -1,4 +1,4 @@
-package com.entity;
+package com.cdg.study.entity;
 
 /*
 create table board

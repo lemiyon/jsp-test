@@ -7,7 +7,7 @@
 	
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
-		<filter-class>com.filter.EncodingFilter</filter-class>
+		<filter-class>com.cdg.study.filter.EncodingFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>EncodingFilter</filter-name>
