@@ -1,26 +1,27 @@
 package com.cdg.study.dao;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
-import javax.sql.DataSource;
-
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.transaction.TransactionFactory;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.hsqldb.Server;
-import org.hsqldb.jdbc.jdbcDataSource;
-import org.hsqldb.jdbc.jdbcDataSourceFactory;
-import org.hsqldb.util.DatabaseManager;
 
 import com.cdg.study.entity.BoardDTO;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /*
  create table board
@@ -36,99 +37,59 @@ import com.cdg.study.entity.BoardDTO;
  */
 
 public class BoardDAO {
-
-	static SqlSessionFactory sqlSessionFactory;
+	private final static String DATA_FILE_PATH = "data.json";
+	
+	
+//	static SqlSessionFactory sqlSessionFactory;
 	// sqlSessionFactory, SqlSession
+//	static {
+//		String resource = "Configuration.xml";
+//		InputStream inputStream = null;
+//		try {
+//			inputStream = Resources.getResourceAsStream(resource);
+//		} catch (IOException e) {
+//		}
+//		
+//		sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+//	}
+	
+	private static ObjectMapper objectMapper;
+	
 	static {
-		String resource = "Configuration.xml";
-		InputStream inputStream = null;
-		try {
-			inputStream = Resources.getResourceAsStream(resource);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		new Server().start();
-		
-//		jdbcDataSource dataSource = new jdbcDataSource();
-//		dataSource.set
-//		dataSource.setDatabase("jdbc:hsqldb:file:create_table.sql");
-//		TransactionFactory transactionFactory = new JdbcTransactionFactory();
-//		Environment environment = new Environment("development", transactionFactory, dataSource);
-//		Configuration configuration = new Configuration(environment);
-//		configuration.addMapper(BlogMapper.class);
-//		SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(configuration);
-		
-		
-		sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		objectMapper = new ObjectMapper();
 	}
 
 	// 글 목록 보기
-	public List<BoardDTO> list() {
-
-		List<BoardDTO> list = null;
-
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			list = session.selectList("list");
-		} finally {
-			session.close();
-		}
-
-		return list;
-
+	public List<BoardDTO> list() throws Exception {
+		return objectMapper.readValue(new File(DATA_FILE_PATH), new TypeReference<List<BoardDTO>>(){});
 	}
 
 	// 글쓰기
-	public int write(BoardDTO dto) {
-		int n = 0;
-		SqlSession session = sqlSessionFactory.openSession();
+	public int write(BoardDTO dto) throws Exception {
+		List<BoardDTO> boardDTOList = list();
+		boardDTOList.add(dto);
+		
+		String jsonString = objectMapper.writeValueAsString(boardDTOList);
 
-		try {
-			n = session.insert("insert", dto);
-			session.commit();
-		} finally {
-			session.close();
-		}
-
-		return n;
+		FileUtils.writeStringToFile(new File(DATA_FILE_PATH), jsonString);
+			
+		return 1;
 	}
 
 	// 글 자세히 보기
-	public BoardDTO retrieve(String num) {
+	public BoardDTO retrieve(String num) throws Exception {
 
-		readCnt(num);
-
-		BoardDTO dto = null;
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			dto = session.selectOne("selectByNum", Integer.parseInt(num));
-			session.commit();
-		} finally {
-			session.close();
-		}
-
-		return dto;
-	}
-
-	// 조회수 증가
-	public void readCnt(String num) {
-		int n = 0;
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			n = session.update("readCnt", Integer.parseInt(num));
-			session.commit();
-		} finally {
-			session.close();
-		}
-
+		int boardNum = Integer.parseInt(num);
+		
+		List<BoardDTO> boardDTOList = list();
+		
+		BoardDTO result = boardDTOList.stream().filter(x -> x.getNum() == boardNum).findFirst().get();
+			
+		return result;
 	}
 
 	// 글 수정하기
-	public int update(BoardDTO dto) {
+	public int update(BoardDTO dto) throws Exception {
 		int n = 0;
 		SqlSession session = sqlSessionFactory.openSession();
 
@@ -143,7 +104,7 @@ public class BoardDAO {
 	}
 
 	// 글 삭제하기
-	public int delete(String num) {
+	public int delete(String num) throws Exception {
 		int n = 0;
 		SqlSession session = sqlSessionFactory.openSession();
 
@@ -158,7 +119,7 @@ public class BoardDAO {
 	}
 
 	// 검색
-	public List<BoardDTO> search(String searchName, String searchValue) {
+	public List<BoardDTO> search(String searchName, String searchValue) throws Exception {
 
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("searchName", searchName);
