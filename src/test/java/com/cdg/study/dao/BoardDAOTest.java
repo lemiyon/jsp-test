@@ -2,6 +2,8 @@ package com.cdg.study.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,19 +17,25 @@ public class BoardDAOTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		dao = new BoardDAO();
+		dao = BoardDAO.getInstance();
+	}
+	
+	@Test
+	public void testGetList() throws Exception {
+		//When
+		List<BoardDTO> actual = dao.getList();
+		
+		//Then
+		assertNotNull(actual);
 	}
 	
 	@Test
 	public void testWrite() throws Exception {
 		//Given
 		BoardDTO dto = new BoardDTO();
-		dto.setNum(0);
 		dto.setAuthor("홍길동");
 		dto.setTitle("테스트입니다");
 		dto.setContent("내용내용");
-		dto.setReadcnt(0);
-		dto.setWriteday("20150910");
 
 		//When
 		int actual = dao.write(dto);
@@ -40,12 +48,9 @@ public class BoardDAOTest {
 	public void testRetrieve() throws Exception {
 		//Given
 		BoardDTO dto = new BoardDTO();
-		dto.setNum(0);
 		dto.setAuthor("홍길동");
 		dto.setTitle("테스트입니다");
 		dto.setContent("내용내용");
-		dto.setReadcnt(0);
-		dto.setWriteday("20150910");
 
 		//When
 		BoardDTO actual = dao.retrieve("0");

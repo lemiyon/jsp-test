@@ -13,7 +13,7 @@ import com.cdg.study.entity.BoardDTO;
 public class BoardUpdateCommand implements BoardCommand {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String num = request.getParameter("num");
 		String author = request.getParameter("author");
 		String title = request.getParameter("title");
@@ -26,7 +26,7 @@ public class BoardUpdateCommand implements BoardCommand {
 		dto.setTitle(title);
 		dto.setContent(content);
 		
-		BoardDAO dao = new BoardDAO();
+		BoardDAO dao = BoardDAO.getInstance();
 		int n = dao.update(dto);
 		
 	}

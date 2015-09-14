@@ -10,10 +10,10 @@ import com.cdg.study.entity.BoardDTO;
 public class BoardDeleteCommand implements BoardCommand {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String num = request.getParameter("num");
 		
-		BoardDAO dao = new BoardDAO();
+		BoardDAO dao = BoardDAO.getInstance();
 		int n = dao.delete(num);
 		
 	}

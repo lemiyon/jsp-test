@@ -16,11 +16,11 @@ public class BoardRetrieveCommand implements BoardCommand {
 	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
 	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String num = request.getParameter("num");
 		
-		BoardDAO dao = new BoardDAO();
+		BoardDAO dao = BoardDAO.getInstance();
 		BoardDTO dto = dao.retrieve(num);
 		
 		request.setAttribute("retrieve", dto);

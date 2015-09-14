@@ -10,6 +10,6 @@ public interface BoardCommand {
 	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
 	 */
 	public abstract void execute(HttpServletRequest request,
-			HttpServletResponse response);
+			HttpServletResponse response) throws Exception;
 
 }

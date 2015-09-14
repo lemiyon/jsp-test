@@ -16,7 +16,7 @@ public class BoardWriteCommand implements BoardCommand {
 	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
 	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String author = request.getParameter("author");
 		String title = request.getParameter("title");
@@ -27,7 +27,7 @@ public class BoardWriteCommand implements BoardCommand {
 		dto.setTitle(title);
 		dto.setContent(content);
 		
-		BoardDAO dao = new BoardDAO();
+		BoardDAO dao = BoardDAO.getInstance();
 		int n = dao.write(dto);
 	}
 	

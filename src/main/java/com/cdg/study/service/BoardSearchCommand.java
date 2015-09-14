@@ -19,12 +19,12 @@ public class BoardSearchCommand implements BoardCommand {
 	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
 	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String searchName = request.getParameter("searchName");
 		String searchValue = request.getParameter("searchValue");
 		
-		BoardDAO dao = new BoardDAO();
+		BoardDAO dao = BoardDAO.getInstance();
 		List<BoardDTO> list = dao.search(searchName, searchValue);
 		
 		

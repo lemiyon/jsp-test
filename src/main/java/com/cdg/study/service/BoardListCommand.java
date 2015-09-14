@@ -19,9 +19,9 @@ public class BoardListCommand implements BoardCommand {
 	 * 따라서 HttpServletRequest, HttpServletResponse 가 필요
 	 */
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) {
-		BoardDAO dao = new BoardDAO();
-		List<BoardDTO> list = dao.list();
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		BoardDAO dao = BoardDAO.getInstance();
+		List<BoardDTO> list = dao.getList();
 		
 		// list.jsp 에서 List<BoardDTO>를 보여준다.
 		// 3가지 scope 중에 선택하여 저장	.

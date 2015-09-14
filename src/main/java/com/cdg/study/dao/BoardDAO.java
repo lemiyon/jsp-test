@@ -2,23 +2,16 @@ package com.cdg.study.dao;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.cdg.study.entity.BoardDTO;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,37 +29,62 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
  */
 
+/**
+ * 게시판 데이터처리를 위한 DAO
+ * JSON처리를 위한 ObjectMapper의 객체생성 리소스를 줄이기위해 싱글턴 적용
+ * 
+ * @author Kanghoon Choi
+ */
 public class BoardDAO {
-	private final static String DATA_FILE_PATH = "data.json";
-	
-	
-//	static SqlSessionFactory sqlSessionFactory;
-	// sqlSessionFactory, SqlSession
-//	static {
-//		String resource = "Configuration.xml";
-//		InputStream inputStream = null;
-//		try {
-//			inputStream = Resources.getResourceAsStream(resource);
-//		} catch (IOException e) {
-//		}
-//		
-//		sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-//	}
-	
+	// 각자 환경에 맞게 수정해주세요. /본인_워크스페이스_경로/jsp-test/data.json
+	private final static String DATA_FILE_PATH = "/Users/nhnent/Documents/workspace/jsp-test/data.json";
+	private volatile static BoardDAO instance;
 	private static ObjectMapper objectMapper;
 	
-	static {
+	private BoardDAO() {
 		objectMapper = new ObjectMapper();
 	}
-
-	// 글 목록 보기
-	public List<BoardDTO> list() throws Exception {
-		return objectMapper.readValue(new File(DATA_FILE_PATH), new TypeReference<List<BoardDTO>>(){});
+	
+	public static BoardDAO getInstance() {
+		if (instance == null) {
+			synchronized (BoardDAO.class) {
+				if (instance == null) {
+					instance = new BoardDAO();
+				}
+			}
+		}
+		return instance;
 	}
 
-	// 글쓰기
+	/**
+	 * 글 목록 보기
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<BoardDTO> getList() {
+		List<BoardDTO> boardList;
+		
+		try {
+			boardList =  objectMapper.readValue(new File(DATA_FILE_PATH), new TypeReference<List<BoardDTO>>(){});
+		} catch (Exception e) {
+			boardList = new ArrayList<>();
+		}
+		
+		return boardList;
+	}
+
+	/**
+	 * 글쓰기
+	 * 
+	 * @param dto
+	 * @return
+	 * @throws Exception
+	 */
 	public int write(BoardDTO dto) throws Exception {
-		List<BoardDTO> boardDTOList = list();
+		List<BoardDTO> boardDTOList = getList();
+		dto.setNum(boardDTOList.size() + 1);
+		dto.setWriteday(new SimpleDateFormat("yyyy/MM/dd hh:mm").format(new Date()));
 		boardDTOList.add(dto);
 		
 		String jsonString = objectMapper.writeValueAsString(boardDTOList);
@@ -76,70 +94,64 @@ public class BoardDAO {
 		return 1;
 	}
 
-	// 글 자세히 보기
+	/**
+	 * 글 자세히 보기
+	 * 
+	 * @param num
+	 * @return
+	 * @throws Exception
+	 */
 	public BoardDTO retrieve(String num) throws Exception {
 
 		int boardNum = Integer.parseInt(num);
 		
-		List<BoardDTO> boardDTOList = list();
+		List<BoardDTO> boardDTOList = getList();
 		
 		BoardDTO result = boardDTOList.stream().filter(x -> x.getNum() == boardNum).findFirst().get();
 			
 		return result;
 	}
 
-	// 글 수정하기
+	/**
+	 * 글 수정하기
+	 * 
+	 * @param dto
+	 * @return
+	 * @throws Exception
+	 */
 	public int update(BoardDTO dto) throws Exception {
-		int n = 0;
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			n = session.update("update", dto);
-			session.commit();
-		} finally {
-			session.close();
-		}
-
-		return n;
+		// TODO : 해당 메소드를 구현해주세요.
+		return 0;
 	}
 
-	// 글 삭제하기
+	/**
+	 * 글 삭제하기
+	 * 
+	 * @param num
+	 * @return
+	 * @throws Exception
+	 */
 	public int delete(String num) throws Exception {
-		int n = 0;
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			n = session.delete("delete", Integer.parseInt(num));
-			session.commit();
-		} finally {
-			session.close();
-		}
-
-		return n;
+		// TODO : 해당 메소드를 구현해주세요.
+		return 0;
 	}
 
-	// 검색
+	/**
+	 * 검색하기
+	 * 
+	 * @param searchName
+	 * @param searchValue
+	 * @return
+	 * @throws Exception
+	 */
 	public List<BoardDTO> search(String searchName, String searchValue) throws Exception {
 
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("searchName", searchName);
 		map.put("searchValue", searchValue);
-		/*String key = "author";
-		if("title".equals(searchName))
-			key = "title";*/
 		
-		List<BoardDTO> list = null;
-
-		SqlSession session = sqlSessionFactory.openSession();
-
-		try {
-			list = session.selectList("search", map);
-		} finally {
-			session.close();
-		}
-
-		return list;
-
+		// TODO : 해당 메소드를 구현해주세요.
+		return null;
 	}
 
 }
