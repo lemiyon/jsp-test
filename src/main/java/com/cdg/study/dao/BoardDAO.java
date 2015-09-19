@@ -37,7 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class BoardDAO {
 	// 각자 환경에 맞게 수정해주세요. /본인_워크스페이스_경로/jsp-test/data.json
-	private final static String DATA_FILE_PATH = "/Users/gim-yuncheol-second/Documents/workspace/jsp-test/data.json";
+	private final static String DATA_FILE_PATH = "/Users/nhnent/Documents/workspace/jsp-test/data.json";
 	private volatile static BoardDAO instance;
 	private static ObjectMapper objectMapper;
 	

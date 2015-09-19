@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Hello, Bola!</title>
+<title>Insert title here</title>
 </head>
 <body>
 	<table border="1">
@@ -36,32 +36,16 @@
 		</tr>
 
 		<%
-		//json에서 저장된 리스트를 불러온다.
-		ArrayList<BoardDTO> list = (ArrayList<BoardDTO>) request.getAttribute("list");
-		int num = 0;
-		String author = "";
-		String title = "아직 글이 작성되지 않았어요! 첫 글을 작성해 주세요 >_< ";
-		String writeday = "";
-		int readcnt = 0;
-		
-		if(list == null) {
-		 title = "it's null!";
-		}
-		//불러온 리스트가 null, 비어있으면 글을 작성해달라고 요청한다.
-		if(list != null || !list.isEmpty())
-		{
-		for (BoardDTO dto : list) {
-				num = dto.getNum();
-				author = dto.getAuthor();
-				title = dto.getTitle();
-				writeday = dto.getWriteday();
-				readcnt = dto.getReadcnt();
-		
+			ArrayList<BoardDTO> list = (ArrayList<BoardDTO>) request.getAttribute("list");
+			for (BoardDTO dto : list) {
+				int num = dto.getNum();
+				String author = dto.getAuthor();
+				String title = dto.getTitle();
+				String writeday = dto.getWriteday();
+				int readcnt = dto.getReadcnt();
 		%>
+
 		<tr>
-		<!-- 위에 보면, java코드 부분이 나뉘어 있는 것을 볼 수 있다. 일반 html코드가 java코드에서 사용되는 
-		변수를 쓰고 싶을 시, 그 변수가 존재하는 범위 내에서 사용해야 한다. 그래서 if문의 } 가 이상하게
-		분리되어 보이는 것! -->
 			<td><%=num%></td>
 			<td><%=author%></td>
 			<td><a href="retrieve?num=<%=num%>"><%=title%></a></td>
@@ -69,8 +53,7 @@
 			<td><%=writeday%></td>
 			<td><%=readcnt%></td>
 		</tr>
-
-	<%}} %>
+		<% } %>
 	</table>
 	
 	<!-- 글쓰기 버튼 -->
