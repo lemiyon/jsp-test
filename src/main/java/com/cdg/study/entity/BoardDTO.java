@@ -26,7 +26,7 @@ public class BoardDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BoardDTO(int num, String author, String title, String content, String writeday, int readcnt) {
+	public BoardDTO(int num, String author, String title, String content, String writedate, int readcnt) {
 		super();
 		this.num = num;
 		this.author = author;
