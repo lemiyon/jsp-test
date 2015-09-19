@@ -21,6 +21,7 @@ import com.cdg.study.service.BoardSearchCommand;
 import com.cdg.study.service.BoardUpdateCommand;
 import com.cdg.study.service.BoardWriteCommand;
 
+//이렇게 어노테이션으로 dd에 서블릿을 등록할 수 있다. 나도 이렇게 해야징~
 @WebServlet("/controller/*")
 public class FrontController extends HttpServlet {
 
